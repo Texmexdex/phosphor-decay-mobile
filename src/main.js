@@ -32,7 +32,14 @@ startBtn.addEventListener('click', async () => {
         console.log('AUDIO_CONTEXT_READY', Tone.context.state);
 
         audioSystem.init();
+
+        // Startup Sound
+        const synth = new Tone.Synth().toDestination();
+        synth.triggerAttackRelease("C5", "8n");
+        console.log('STARTUP_SOUND_TRIGGERED');
+
         mapper.start();
+
 
         startBtn.textContent = 'SYSTEM_ACTIVE';
         startBtn.disabled = true;
@@ -46,7 +53,9 @@ startBtn.addEventListener('click', async () => {
 
 // Setup Video Buttons
 document.getElementById('cam-btn').addEventListener('click', () => {
+    console.log('CAM_BTN_CLICKED');
     videoInput.startWebcam();
+
     videoProcessor.start();
     overlay.style.display = 'none';
 });
