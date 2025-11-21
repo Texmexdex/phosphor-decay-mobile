@@ -1,0 +1,163 @@
+:root {
+    --bg-color: #050505;
+    --text-color: #00ff41;
+    --accent-color: #ff0055;
+    --panel-bg: #111;
+    --font-main: 'Courier New', Courier, monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* CRT Scanline Effect */
+body::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 100;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--text-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 0 var(--accent-color);
+}
+
+button {
+    background: transparent;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    padding: 8px 16px;
+    font-family: var(--font-main);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.1s;
+}
+
+button:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 10px var(--text-color);
+}
+
+main {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+}
+
+.canvas-container {
+    flex: 2;
+    border: 1px solid var(--text-color);
+    position: relative;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+    /* Important for glitch look */
+}
+
+.overlay {
+    position: absolute;
+    color: var(--accent-color);
+    font-size: 2rem;
+    animation: blink 1s infinite;
+    pointer-events: none;
+}
+
+.controls {
+    flex: 1;
+    border: 1px solid var(--text-color);
+    padding: 20px;
+    overflow-y: auto;
+    background: var(--panel-bg);
+}
+
+.control-group {
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 10px;
+}
+
+.control-group h3 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: var(--accent-color);
+}
+
+input[type="range"] {
+    width: 100%;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    background: var(--text-color);
+    cursor: pointer;
+    margin-top: -6px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #333;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}

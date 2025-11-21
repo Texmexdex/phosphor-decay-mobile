@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glitch Core Video Synth</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Tone.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>VIDEO_SYNTH_V1</h1>
+            <button id="start-btn">INITIALIZE_SYSTEM</button>
+        </header>
+        
+        <main>
+            <div class="canvas-container">
+                <canvas id="main-canvas"></canvas>
+                <div class="overlay">NO_SIGNAL</div>
+            </div>
+            
+            <div class="controls" id="controls">
+                <!-- Controls will be injected here -->
+                <div class="control-group">
+                    <h3>VIDEO_INPUT</h3>
+                    <button id="cam-btn">WEBCAM</button>
+                    <button id="screen-btn">SCREEN</button>
+                </div>
+                <div class="control-group">
+                    <h3>AUDIO_ENGINE</h3>
+                    <label>VOLUME <input type="range" id="master-vol" min="-60" max="0" value="-10"></label>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
