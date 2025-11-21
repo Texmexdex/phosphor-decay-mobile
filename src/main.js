@@ -17,10 +17,27 @@ const audioSystem = new AudioSystem();
 const analyzer = new Analyzer(videoProcessor.canvas); // Use the main canvas as source
 const mapper = new Mapper(audioSystem, analyzer);
 
-isInitialized = true;
+startBtn.addEventListener('click', async () => {
+    if (isInitialized) return;
+
+    try {
+        await Tone.start();
+        if (Tone.context.state !== 'running') {
+            await Tone.context.resume();
+        }
+        console.log('AUDIO_CONTEXT_READY', Tone.context.state);
+
+        audioSystem.init();
+        mapper.start();
+
+        startBtn.textContent = 'SYSTEM_ACTIVE';
+        startBtn.disabled = true;
+        overlay.style.display = 'none';
+
+        isInitialized = true;
     } catch (e) {
-    console.error('INIT_FAILURE', e);
-}
+        console.error('INIT_FAILURE', e);
+    }
 });
 
 // Setup Video Buttons
