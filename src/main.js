@@ -15,7 +15,11 @@ const videoInput = new VideoInput();
 const videoProcessor = new VideoProcessor(videoInput);
 const audioSystem = new AudioSystem();
 const analyzer = new Analyzer(videoProcessor.canvas); // Use the main canvas as source
+
 const mapper = new Mapper(audioSystem, analyzer);
+
+console.log('MODULES_LOADED');
+
 
 startBtn.addEventListener('click', async () => {
     if (isInitialized) return;
@@ -209,4 +213,13 @@ function generateControls() {
     });
 }
 
-generateControls();
+try {
+    console.log('GENERATING_CONTROLS...');
+    generateControls();
+    console.log('CONTROLS_GENERATED');
+} catch (e) {
+    console.error('CONTROLS_GENERATION_FAILED', e);
+    // Manually trigger window error for visibility
+    if (window.onerror) window.onerror(e.message, 'src/main.js', 212, 0, e);
+}
+

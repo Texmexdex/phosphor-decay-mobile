@@ -10,6 +10,21 @@
 </head>
 <body>
     <div id="app">
+        <div id="error-log" style="display:none; background:rgba(255,0,0,0.8); color:white; padding:10px; position:fixed; top:0; left:0; right:0; z-index:9999; font-family:monospace; white-space:pre-wrap;"></div>
+        <script>
+            window.onerror = function(msg, url, lineNo, columnNo, error) {
+                const errorLog = document.getElementById('error-log');
+                errorLog.style.display = 'block';
+                errorLog.textContent += `Error: ${msg}\nAt: ${url}:${lineNo}:${columnNo}\nStack: ${error ? error.stack : 'N/A'}\n\n`;
+                return false;
+            };
+            window.addEventListener('unhandledrejection', function(event) {
+                const errorLog = document.getElementById('error-log');
+                errorLog.style.display = 'block';
+                errorLog.textContent += `Unhandled Rejection: ${event.reason}\n\n`;
+            });
+        </script>
+
         <header>
             <h1>VIDEO_SYNTH_V1</h1>
             <button id="start-btn">INITIALIZE_SYSTEM</button>
