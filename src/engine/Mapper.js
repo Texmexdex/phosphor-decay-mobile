@@ -19,14 +19,17 @@ export class Mapper {
         if (this.isRunning) return;
         this.isRunning = true;
 
-        // Start Tone Transport
-        Tone.Transport.start();
+        // Start Tone Transport only if not already started
+        if (Tone.Transport.state !== 'started') {
+            Tone.Transport.start();
+        }
 
         // Schedule a loop
         this.loopId = Tone.Transport.scheduleRepeat((time) => {
             this.update(time);
         }, "16n");
     }
+
 
     stop() {
         this.isRunning = false;
