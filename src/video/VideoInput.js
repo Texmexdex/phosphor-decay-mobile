@@ -14,6 +14,7 @@ export class VideoInput {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             this.videoElement.srcObject = stream;
+            await this.videoElement.play();
             this.isPlaying = true;
         } catch (err) {
             console.error("Error accessing webcam:", err);
@@ -24,6 +25,7 @@ export class VideoInput {
         try {
             const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
             this.videoElement.srcObject = stream;
+            await this.videoElement.play();
             this.isPlaying = true;
         } catch (err) {
             console.error("Error accessing screen:", err);
