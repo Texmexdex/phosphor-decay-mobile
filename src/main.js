@@ -22,6 +22,9 @@ const composer = new Composer(audioSystem, analyzer);
 
 console.log('MODULES_LOADED');
 
+// Link video processor to audio synths for feedback delay sync
+videoProcessor.setAudioSynths(audioSystem.synths);
+
 
 startBtn.addEventListener('click', async () => {
     if (isInitialized) return;
@@ -130,6 +133,7 @@ function generateControls() {
     // Video Params
     createSlider('FEEDBACK', 0, 0.99, 0.01, videoProcessor.params.feedback, (v) => {
         videoProcessor.params.feedback = v;
+        videoProcessor.syncAudioWithVideoFeedback(); // Sync audio delay with video feedback
     });
 
     createSlider('FEEDBACK_ZOOM', 1.0, 1.2, 0.001, videoProcessor.params.feedbackZoom, (v) => {

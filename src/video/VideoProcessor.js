@@ -27,7 +27,38 @@ export class VideoProcessor {
             this.resize();
         };
 
+        // Link to audio synths for feedback delay sync
+        this.audioSynths = null;
+
         this.loop = this.loop.bind(this);
+    }
+
+    /**
+     * Set audio synths reference for feedback delay sync
+     */
+    setAudioSynths(synths) {
+        this.audioSynths = synths;
+    }
+
+    /**
+     * Sync audio delay with video feedback amount
+     * Creates layered echo effect matching visual feedback
+     */
+    syncAudioWithVideoFeedback() {
+        if (!this.audioSynths || !this.audioSynths.feedbackDelay) return;
+
+        const feedback = this.params.feedback;
+        // Calculate delay based on feedback amount
+        // More feedback = more layers = longer delay
+        const baseDelay = 0.05; // 50ms base
+        const maxDelay = 0.3; // 300ms max
+        const delayTime = baseDelay + (feedback * (maxDelay - baseDelay));
+
+        // Wet amount follows feedback (more feedback = more audible delay)
+        const wetAmount = feedback * 0.6;
+
+        this.audioSynths.feedbackDelay.delayTime.rampTo(delayTime, 0.1);
+        this.audioSynths.feedbackDelay.wet.rampTo(wetAmount, 0.1);
     }
 
     resize() {

@@ -14,7 +14,14 @@ export class SynthEngine {
             wet: 0.3
         }).connect(this.reverb);
 
-        this.bitCrusher = new Tone.BitCrusher(4).connect(this.delay);
+        // Feedback Delay - syncs with video feedback for infinity mirror effect
+        this.feedbackDelay = new Tone.FeedbackDelay({
+            delayTime: 0.1, // Will be controlled by video feedback amount
+            feedback: 0.5,
+            wet: 0
+        }).connect(this.delay);
+
+        this.bitCrusher = new Tone.BitCrusher(4).connect(this.feedbackDelay);
         this.bitCrusher.wet.value = 0; // Start dry
 
         this.distortion = new Tone.Distortion(0.4).connect(this.bitCrusher);
