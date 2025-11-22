@@ -115,12 +115,140 @@ function generateControls() {
         videoProcessor.params.glitchProb = v;
     });
 
+
     // --- SONIFICATION controls ---
     const sonificationHeader = document.createElement('h2');
     sonificationHeader.textContent = 'MUSIC COMPOSITION';
     sonificationHeader.style.marginTop = '20px';
     sonificationHeader.style.borderTop = '1px solid var(--primary)';
     sonificationHeader.style.paddingTop = '10px';
+    controlsContainer.appendChild(sonificationHeader);
+
+    // Progression selector
+    const progGroup = document.createElement('div');
+    progGroup.className = 'control-group';
+    progGroup.innerHTML = `<h3>PROGRESSION</h3>`;
+
+    const progSelect = document.createElement('select');
+    progSelect.style.width = '100%';
+
+    // Create optgroups for better organization
+    const progressions = {
+        'Classic Minor': [
+            { idx: 0, name: 'i-VI-III-VII (Dramatic)' },
+            { idx: 1, name: 'i-iv-VII-III (Dark)' },
+            { idx: 2, name: 'i-VII-VI-VII (Tension)' },
+            { idx: 3, name: 'i-VI-iv-v (Sad)' },
+            { idx: 4, name: 'i-III-VII-VI (Epic)' },
+            { idx: 5, name: 'VI-VII-i (Resolution)' },
+        ],
+        'Classic Major': [
+            { idx: 0, name: 'I-V-vi-IV (Pop)' },
+            { idx: 1, name: 'I-IV-V-I (Rock)' },
+            { idx: 2, name: 'I-vi-ii-V (Jazz Turn)' },
+            { idx: 3, name: 'vi-IV-I-V (Sensitive)' },
+            { idx: 4, name: 'I-iii-IV (Hopeful)' },
+        ],
+        'Ambient': [
+            { idx: 0, name: 'Drone' },
+            { idx: 1, name: 'Floating' },
+            { idx: 2, name: 'Slow Evolution' },
+            { idx: 3, name: 'Tension Drone' },
+            { idx: 4, name: 'Pendulum' },
+            { idx: 5, name: 'Relative Shift' },
+        ],
+        'Electronic': [
+            { idx: 0, name: 'Minimal Techno' },
+            { idx: 1, name: 'Dark Techno' },
+            { idx: 2, name: 'Progressive House' },
+            { idx: 3, name: 'Trance' },
+            { idx: 4, name: 'Deep House' },
+        ],
+        'Jazz': [
+            { idx: 0, name: 'ii-V-I Prep' },
+            { idx: 1, name: 'Circle of Fifths' },
+            { idx: 2, name: 'Chromatic Descent' },
+            { idx: 3, name: 'Turnaround' },
+        ],
+        'Cinematic': [
+            { idx: 0, name: 'Epic Rise' },
+            { idx: 1, name: 'Emotional Swell' },
+            { idx: 2, name: 'Heroic' },
+            { idx: 3, name: 'Dark Suspense' },
+            { idx: 4, name: 'Wonder' },
+        ],
+        'Experimental': [
+            { idx: 0, name: 'Chromatic Climb' },
+            { idx: 1, name: 'Tritone Switch' },
+            { idx: 2, name: 'Stacked Thirds' },
+            { idx: 3, name: 'Descending Scale' },
+            { idx: 4, name: 'Quartal Harmony' },
+        ],
+    };
+
+    const catKeys = {
+        'Classic Minor': 'classic_minor',
+        'Classic Major': 'classic_major',
+        'Ambient': 'ambient',
+        'Electronic': 'electronic',
+        'Jazz': 'jazz',
+        'Cinematic': 'cinematic',
+        'Experimental': 'experimental',
+    };
+
+    let isFirst = true;
+    for (const [catName, progs] of Object.entries(progressions)) {
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = catName;
+
+        progs.forEach(prog => {
+            const opt = document.createElement('option');
+            opt.value = JSON.stringify({ cat: catKeys[catName], idx: prog.idx });
+            opt.textContent = prog.name;
+            if (isFirst) {
+                opt.selected = true;
+                isFirst = false;
+            }
+            optgroup.appendChild(opt);
+        });
+
+        progSelect.appendChild(optgroup);
+    }
+
+    progSelect.addEventListener('change', (e) => {
+        const { cat, idx } = JSON.parse(e.target.value);
+        composer.setProgression(cat, idx);
+    });
+    progGroup.appendChild(progSelect);
+    controlsContainer.appendChild(progGroup);
+
+    // Rhythm template selector
+    const rhythmGroup = document.createElement('div');
+    rhythmGroup.className = 'control-group';
+    rhythmGroup.innerHTML = `<h3>RHYTHM</h3>`;
+
+    const rhythmSelect = document.createElement('select');
+    rhythmSelect.style.width = '100%';
+
+    const rhythmTemplates = [
+        { value: 'ambient', name: 'AMBIENT (90 BPM)' },
+        { value: 'house', name: 'HOUSE (125 BPM)' },
+        { value: 'techno', name: 'TECHNO (135 BPM)' },
+        { value: 'breakbeat', name: 'BREAKBEAT (140 BPM)' },
+        { value: 'dnb', name: 'DRUM & BASS (170 BPM)' },
+        { value: 'dubstep', name: 'DUBSTEP (140 BPM)' },
+        { value: 'glitch', name: 'GLITCH (110 BPM)' },
+        { value: 'minimal', name: 'MINIMAL (120 BPM)' },
+    ];
+
+    rhythmTemplates.forEach((template, i) => {
+        const opt = document.createElement('option');
+        opt.value = template.value;
+        opt.textContent = template.name;
+        if (i === 0) opt.selected = true;
+        rhythmSelect.appendChild(opt);
+    });
+
     rhythmSelect.addEventListener('change', (e) => {
         composer.setRhythmTemplate(e.target.value);
     });
