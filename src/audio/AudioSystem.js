@@ -54,6 +54,25 @@ export class AudioSystem {
         }
     }
 
+    // Synth Switching Methods
+    setLeadType(type) {
+        if (this.synths) {
+            this.synths.switchLeadType(type);
+        }
+    }
+
+    setBassType(type) {
+        if (this.synths) {
+            this.synths.switchBassType(type);
+        }
+    }
+
+    setPadType(type) {
+        if (this.synths) {
+            this.synths.switchPadType(type);
+        }
+    }
+
     // Method to trigger a note based on abstract parameters
     trigger(instrument, noteIndex, velocity = 1, duration = "8n") {
         if (!this.isReady) return;

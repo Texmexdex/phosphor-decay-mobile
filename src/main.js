@@ -3,6 +3,7 @@ import { VideoProcessor } from './video/VideoProcessor.js';
 import { AudioSystem } from './audio/AudioSystem.js';
 import { Analyzer } from './engine/Analyzer.js';
 import { Composer } from './engine/Composer.js';
+import { LEAD_NAMES, BASS_NAMES, PAD_NAMES } from './audio/SynthPresets.js';
 
 
 console.log('SYSTEM_BOOT...');
@@ -384,6 +385,38 @@ function generateControls() {
         });
 
         group.appendChild(toggle);
+
+        // Add Synth Type Selector for Lead, Bass, Pad
+        if (['lead', 'bass', 'pad'].includes(inst.id)) {
+            const select = document.createElement('select');
+            select.style.width = '100px';
+            select.style.fontSize = '0.8rem';
+            select.style.background = '#222';
+            select.style.color = 'var(--text-color)';
+            select.style.border = '1px solid #444';
+
+            let options = {};
+            if (inst.id === 'lead') options = LEAD_NAMES;
+            else if (inst.id === 'bass') options = BASS_NAMES;
+            else if (inst.id === 'pad') options = PAD_NAMES;
+
+            Object.entries(options).forEach(([key, name]) => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = name;
+                select.appendChild(opt);
+            });
+
+            select.addEventListener('change', (e) => {
+                const type = e.target.value;
+                if (inst.id === 'lead') audioSystem.setLeadType(type);
+                else if (inst.id === 'bass') audioSystem.setBassType(type);
+                else if (inst.id === 'pad') audioSystem.setPadType(type);
+            });
+
+            group.appendChild(select);
+        }
+
         group.appendChild(vol);
         controlsContainer.appendChild(group);
     });

@@ -1,3 +1,5 @@
+import { LEAD_PRESETS, BASS_PRESETS, PAD_PRESETS } from './SynthPresets.js';
+
 export class SynthEngine {
     constructor(destination) {
         this.destination = destination;
@@ -31,28 +33,18 @@ export class SynthEngine {
 
         // 1. Pad (Ambient background)
         this.padVol = new Tone.Volume(-12).connect(this.reverb);
-        this.pad = new Tone.PolySynth(Tone.Synth, {
-            oscillator: { type: "fatcustom", partials: [0.2, 1, 0, 0.5, 0.1], spread: 40, count: 3 },
-            envelope: { attack: 2, decay: 1, sustain: 1, release: 2 }
-        }).connect(this.padVol);
+        this.currentPadType = 'warm';
+        this.pad = new Tone.PolySynth(Tone.Synth, PAD_PRESETS[this.currentPadType]).connect(this.padVol);
 
         // 2. Bass (Deep, FM)
         this.bassVol = new Tone.Volume(-6).connect(this.distortion);
-        this.bass = new Tone.FMSynth({
-            harmonicity: 1,
-            modulationIndex: 3.5,
-            oscillator: { type: "custom", partials: [0, 1, 0, 2] },
-            envelope: { attack: 0.01, decay: 0.2, sustain: 0.8, release: 0.5 },
-            modulation: { type: "square" },
-            modulationEnvelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.01 }
-        }).connect(this.bassVol);
+        this.currentBassType = 'sub';
+        this.bass = new Tone.MonoSynth(BASS_PRESETS[this.currentBassType]).connect(this.bassVol);
 
         // 3. Lead (Plucky, Arp)
         this.leadVol = new Tone.Volume(-10).connect(this.delay);
-        this.lead = new Tone.PolySynth(Tone.Synth, {
-            oscillator: { type: "triangle" },
-            envelope: { attack: 0.02, decay: 0.1, sustain: 0.1, release: 1 }
-        }).connect(this.leadVol);
+        this.currentLeadType = 'saw';
+        this.lead = new Tone.PolySynth(Tone.Synth, LEAD_PRESETS[this.currentLeadType]).connect(this.leadVol);
 
         // 4. Noise (Rhythmic Glitch)
         this.noiseVol = new Tone.Volume(-15).connect(this.bitCrusher);
@@ -66,5 +58,59 @@ export class SynthEngine {
         if (this[effect] && this[effect].wet) {
             this[effect].wet.value = value;
         }
+    }
+
+    /**
+     * Switch lead synth type
+     */
+    switchLeadType(type) {
+        if (!LEAD_PRESETS[type]) {
+            console.warn(`Unknown lead type: ${type}`);
+            return;
+        }
+
+        // Dispose old synth
+        this.lead.dispose();
+
+        // Create new synth with preset
+        this.lead = new Tone.PolySynth(Tone.Synth, LEAD_PRESETS[type]).connect(this.leadVol);
+        this.currentLeadType = type;
+        console.log(`Switched to lead type: ${type}`);
+    }
+
+    /**
+     * Switch bass synth type
+     */
+    switchBassType(type) {
+        if (!BASS_PRESETS[type]) {
+            console.warn(`Unknown bass type: ${type}`);
+            return;
+        }
+
+        // Dispose old synth
+        this.bass.dispose();
+
+        // Create new synth with preset
+        this.bass = new Tone.MonoSynth(BASS_PRESETS[type]).connect(this.bassVol);
+        this.currentBassType = type;
+        console.log(`Switched to bass type: ${type}`);
+    }
+
+    /**
+     * Switch pad synth type
+     */
+    switchPadType(type) {
+        if (!PAD_PRESETS[type]) {
+            console.warn(`Unknown pad type: ${type}`);
+            return;
+        }
+
+        // Dispose old synth
+        this.pad.dispose();
+
+        // Create new synth with preset
+        this.pad = new Tone.PolySynth(Tone.Synth, PAD_PRESETS[type]).connect(this.padVol);
+        this.currentPadType = type;
+        console.log(`Switched to pad type: ${type}`);
     }
 }
