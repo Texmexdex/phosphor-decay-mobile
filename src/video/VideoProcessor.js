@@ -22,13 +22,37 @@ export class VideoProcessor {
         this.resize();
         window.addEventListener('resize', () => this.resize());
 
+        // Resize when video dimensions are loaded
+        this.videoInput.onMetadataLoaded = () => {
+            this.resize();
+        };
+
         this.loop = this.loop.bind(this);
     }
 
     resize() {
         const container = this.canvas.parentElement;
-        this.canvas.width = container.clientWidth;
-        this.canvas.height = container.clientHeight;
+        const video = this.videoInput.videoElement;
+
+        // If video is loaded, match its aspect ratio
+        if (video && video.videoWidth && video.videoHeight) {
+            const videoAspect = video.videoWidth / video.videoHeight;
+            const containerAspect = container.clientWidth / container.clientHeight;
+
+            if (containerAspect > videoAspect) {
+                // Container is wider - fit to height
+                this.canvas.height = container.clientHeight;
+                this.canvas.width = container.clientHeight * videoAspect;
+            } else {
+                // Container is taller - fit to width
+                this.canvas.width = container.clientWidth;
+                this.canvas.height = container.clientWidth / videoAspect;
+            }
+        } else {
+            // Fallback: fill container
+            this.canvas.width = container.clientWidth;
+            this.canvas.height = container.clientHeight;
+        }
 
         this.feedbackCanvas.width = this.canvas.width;
         this.feedbackCanvas.height = this.canvas.height;

@@ -4,6 +4,14 @@ export class VideoInput {
         this.videoElement.autoplay = true;
         this.videoElement.muted = true;
         this.isPlaying = false;
+        this.onMetadataLoaded = null; // Callback for when video dimensions are ready
+
+        // Listen for video metadata (dimensions) loaded
+        this.videoElement.addEventListener('loadedmetadata', () => {
+            if (this.onMetadataLoaded) {
+                this.onMetadataLoaded();
+            }
+        });
     }
 
     getVideoElement() {
