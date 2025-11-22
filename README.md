@@ -98,12 +98,7 @@ The same song. The same loop. The same truth.
 
 ## Quick Start
 
-```bash
-# No build required - pure vanilla JavaScript
-python -m http.server 8000
-
-# Open: http://localhost:8000/video-synth/
-```
+(https://texmexdex.github.io/Phosphor-Decay/)
 
 1. Click **INITIALIZE_SYSTEM**
 2. The feedback loop begins automatically
@@ -120,8 +115,6 @@ python -m http.server 8000
 - **Tone.js** - Web Audio synthesis
 - **Canvas API** - Real-time video processing
 - **WebRTC** - Optional webcam/screen input
-
-See `.kiro/steering/` for detailed documentation.
 
 ---
 
@@ -196,3 +189,4 @@ Built with the understanding that:
 ---
 
 *Phosphor Decay - Where the trail becomes the source* 🌀
+
