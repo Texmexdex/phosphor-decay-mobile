@@ -3,8 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phosphor Decay - An Instrument of Tautological Singularity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Phosphor Decay Mobile - An Instrument of Tautological Singularity</title>
     <meta name="description" content="Where observation and creation collapse into the same eternal instant, and the echo becomes the source.">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:,">
@@ -33,23 +35,43 @@
             <h1>VIDEO_SYNTH_V1</h1>
             <div class="header-controls">
                 <button id="start-btn">INITIALIZE_SYSTEM</button>
+                <button id="mobile-menu-btn" class="mobile-menu-btn" title="Controls">⋮</button>
                 <button id="toggle-ui-btn" title="Hide UI & Cursor">👁</button>
             </div>
         </header>
 
-        <main>
-            <!-- Left Sidebar: Video & Shape Controls -->
-            <div class="controls left-controls" id="left-controls">
-                <h2>VIDEO/SHAPES</h2>
-                <div class="control-group">
-                    <h3>VIDEO_INPUT</h3>
-                    <button id="cam-btn">WEBCAM</button>
-                    <button id="screen-btn">SCREEN</button>
-                </div>
-                <!-- Dynamic controls will be injected here -->
+        <!-- Mobile Controls Dropdown -->
+        <div id="mobile-controls-panel" class="mobile-controls-panel">
+            <div class="mobile-controls-header">
+                <h2>CONTROLS</h2>
+                <button id="close-mobile-menu" class="close-mobile-menu">✕</button>
             </div>
+            <div class="mobile-controls-content">
+                <!-- Left Sidebar: Video & Shape Controls -->
+                <div class="controls left-controls" id="left-controls">
+                    <h2>VIDEO/SHAPES</h2>
+                    <div class="control-group">
+                        <h3>VIDEO_INPUT</h3>
+                        <button id="cam-btn">WEBCAM</button>
+                        <button id="screen-btn">SCREEN</button>
+                    </div>
+                    <!-- Dynamic controls will be injected here -->
+                </div>
 
-            <!-- Center: Canvas -->
+                <!-- Right Sidebar: Audio Controls -->
+                <div class="controls right-controls" id="right-controls">
+                    <h2>AUDIO</h2>
+                    <div class="control-group">
+                        <h3>AUDIO_ENGINE</h3>
+                        <label>VOLUME <input type="range" id="master-vol" min="-60" max="0" value="-10"></label>
+                    </div>
+                    <!-- Dynamic audio controls will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <!-- Center: Canvas (full screen on mobile) -->
             <div class="canvas-container" id="canvas-container">
                 <canvas id="main-canvas"></canvas>
                 <div class="overlay">NO_SIGNAL</div>
@@ -57,16 +79,6 @@
                 <button class="canvas-feedback-btn active" id="canvas-feedback-btn"
                     title="Restart Feedback Loop">∞</button>
                 <button class="timebased-btn" id="timebased-btn" title="Time-Based Composer">♩</button>
-            </div>
-
-            <!-- Right Sidebar: Audio Controls -->
-            <div class="controls right-controls" id="right-controls">
-                <h2>AUDIO</h2>
-                <div class="control-group">
-                    <h3>AUDIO_ENGINE</h3>
-                    <label>VOLUME <input type="range" id="master-vol" min="-60" max="0" value="-10"></label>
-                </div>
-                <!-- Dynamic audio controls will be injected here -->
             </div>
         </main>
     </div>

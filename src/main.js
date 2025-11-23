@@ -145,30 +145,57 @@ document.getElementById('canvas-feedback-btn').addEventListener('click', () => {
     console.log('CANVAS_FEEDBACK_RESTARTED');
 });
 
-// UI & Cursor Toggle
-document.getElementById('toggle-ui-btn').addEventListener('click', () => {
-    const header = document.querySelector('header');
-    const leftControls = document.getElementById('left-controls');
-    const rightControls = document.getElementById('right-controls');
-    const body = document.body;
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const closeMobileMenu = document.getElementById('close-mobile-menu');
+const mobileControlsPanel = document.getElementById('mobile-controls-panel');
 
-    header.classList.toggle('ui-hidden');
-    leftControls.classList.toggle('ui-hidden');
-    rightControls.classList.toggle('ui-hidden');
-    body.classList.toggle('hide-cursor');
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileControlsPanel.classList.add('open');
+    });
+}
+
+if (closeMobileMenu) {
+    closeMobileMenu.addEventListener('click', () => {
+        mobileControlsPanel.classList.remove('open');
+    });
+}
+
+// Close mobile menu when clicking outside
+mobileControlsPanel.addEventListener('click', (e) => {
+    if (e.target === mobileControlsPanel) {
+        mobileControlsPanel.classList.remove('open');
+    }
 });
+
+// UI & Cursor Toggle (Desktop only)
+const toggleUIBtn = document.getElementById('toggle-ui-btn');
+if (toggleUIBtn) {
+    toggleUIBtn.addEventListener('click', () => {
+        const header = document.querySelector('header');
+        const leftControls = document.querySelectorAll('.left-controls');
+        const rightControls = document.querySelectorAll('.right-controls');
+        const body = document.body;
+
+        header.classList.toggle('ui-hidden');
+        leftControls.forEach(el => el.classList.toggle('ui-hidden'));
+        rightControls.forEach(el => el.classList.toggle('ui-hidden'));
+        body.classList.toggle('hide-cursor');
+    });
+}
 
 // Keyboard shortcut for UI toggle (U key)
 document.addEventListener('keydown', (e) => {
     if (e.key === 'u' || e.key === 'U') {
         const header = document.querySelector('header');
-        const leftControls = document.getElementById('left-controls');
-        const rightControls = document.getElementById('right-controls');
+        const leftControls = document.querySelectorAll('.left-controls');
+        const rightControls = document.querySelectorAll('.right-controls');
         const body = document.body;
 
         header.classList.toggle('ui-hidden');
-        leftControls.classList.toggle('ui-hidden');
-        rightControls.classList.toggle('ui-hidden');
+        leftControls.forEach(el => el.classList.toggle('ui-hidden'));
+        rightControls.forEach(el => el.classList.toggle('ui-hidden'));
         body.classList.toggle('hide-cursor');
     }
 });
