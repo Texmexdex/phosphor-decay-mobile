@@ -20,7 +20,7 @@ export class VideoProcessor {
         // Effect Parameters (optimized for mobile)
         this.params = {
             feedback: 0.92, // 0 to 1
-            feedbackZoom: 1.01, // Scale factor for feedback
+            feedbackZoom: this.isMobile ? 1.0 : 1.01, // No zoom growth on mobile to prevent bleeding
             feedbackRotation: 0, // Degrees per frame
             feedbackRotationVelocity: 0, // Continuous rotation speed
             feedbackPanX: 0, // Pixels
