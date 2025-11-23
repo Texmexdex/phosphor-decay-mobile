@@ -87,12 +87,7 @@ startBtn.addEventListener('click', async () => {
             isTimeBasedActive = true;
         }
         
-        // Mobile: Optimize startup settings to prevent color bleeding
-        if (isMobile) {
-            videoProcessor.params.feedbackZoom = 0.98; // Zoom out slightly to reduce bleeding
-        }
-        
-        // Add a cube shape on startup (uses mobile-optimized defaults)
+        // Add a cube shape on startup (uses mobile-optimized defaults: larger shape, thin lines)
         if (videoProcessor.shapeGenerator) {
             videoProcessor.shapeGenerator.addShape('cube');
             console.log('STARTUP_SHAPE: Cube added with mobile defaults (size:', videoProcessor.shapeGenerator.shapeSize, 'line:', videoProcessor.shapeGenerator.lineWidth, ')');
@@ -436,8 +431,8 @@ function generateControls() {
     shapeContainer.appendChild(clearShapesBtn);
     leftContainer.appendChild(shapeContainer);
 
-    // Shape Size and Line Width (mobile-optimized defaults)
-    const defaultShapeSize = isMobile ? 0.05 : 0.15;
+    // Shape Size and Line Width (mobile-optimized: larger shape, thinner lines)
+    const defaultShapeSize = isMobile ? 0.25 : 0.15;
     const defaultLineWidth = isMobile ? 1 : 3;
     
     createSlider('SHAPE SIZE', 0.05, 0.4, 0.01, defaultShapeSize, (v) => {
