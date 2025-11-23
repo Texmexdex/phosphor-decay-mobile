@@ -87,9 +87,9 @@ startBtn.addEventListener('click', async () => {
             isTimeBasedActive = true;
         }
         
-        // Mobile: Optimize startup settings for better visual
+        // Mobile: Set initial static zoom (zoomed in view, no growing effect)
         if (isMobile) {
-            videoProcessor.params.feedbackZoom = 1.015; // Slight zoom in for better effect
+            videoProcessor.params.feedbackZoom = 1.3; // Static zoom in (like pinch zoom)
         }
         
         // Add a cube shape on startup (uses mobile-optimized defaults: larger shape, thin lines)
