@@ -319,10 +319,11 @@ select:focus {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 85%;
-    max-width: 400px;
+    width: 75%;
+    max-width: 350px;
     height: 100vh;
-    background: var(--panel-bg);
+    background: rgba(34, 34, 34, 0.95);
+    backdrop-filter: blur(10px);
     border-left: 1px solid var(--panel-border);
     z-index: 1000;
     transition: right 0.3s ease;
@@ -339,9 +340,10 @@ select:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
+    padding: 12px 16px;
     border-bottom: 1px solid var(--panel-border);
     flex-shrink: 0;
+    background: rgba(26, 26, 26, 0.95);
 }
 
 .mobile-controls-header h2 {
@@ -351,8 +353,10 @@ select:focus {
 }
 
 .close-mobile-menu {
-    font-size: 1.2rem;
-    padding: 4px 12px;
+    font-size: 1.4rem;
+    padding: 8px 16px;
+    min-width: 44px;
+    min-height: 44px;
 }
 
 .mobile-controls-content {
@@ -423,34 +427,53 @@ select:focus {
     .mobile-controls-panel button {
         padding: 8px 12px;
         font-size: 0.6rem;
+        margin: 4px 0;
+    }
+
+    .mobile-controls-panel .control-group {
+        margin: 8px 0;
+        padding: 8px 0;
     }
 
     .mobile-controls-panel input[type="range"] {
         height: 4px;
+        margin: 12px 0;
+        padding: 8px 0;
     }
 
     .mobile-controls-panel input[type="range"]::-webkit-slider-thumb {
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
     }
 
     .mobile-controls-panel input[type="range"]::-moz-range-thumb {
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
     }
 
     .mobile-controls-panel select {
-        padding: 6px 8px;
+        padding: 8px 10px;
         font-size: 0.6rem;
+        margin: 4px 0;
     }
 
     .mobile-controls-panel h3 {
         font-size: 0.55rem;
-        margin-top: 12px;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        padding: 4px 0;
     }
 
     .mobile-controls-panel label {
         font-size: 0.55rem;
+        padding: 8px 0;
+        margin: 4px 0;
+    }
+
+    /* Better scrolling area - prevent accidental slider adjustments */
+    .mobile-controls-content {
+        padding: 12px 16px;
+        touch-action: pan-y;
     }
 }
 
