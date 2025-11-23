@@ -87,11 +87,17 @@ startBtn.addEventListener('click', async () => {
             isTimeBasedActive = true;
         }
         
-        // Add a cube shape on startup with thin lines
+        // Mobile: Optimize startup settings to prevent color bleeding
+        if (isMobile) {
+            videoProcessor.params.feedbackZoom = 0.98; // Zoom out slightly to reduce bleeding
+        }
+        
+        // Add a cube shape on startup with minimal bleeding
         if (videoProcessor.shapeGenerator) {
-            videoProcessor.shapeGenerator.lineWidth = 1; // Thin lines to prevent filling screen
+            videoProcessor.shapeGenerator.shapeSize = 0.05; // Smaller shape
+            videoProcessor.shapeGenerator.lineWidth = 1; // Thin lines
             videoProcessor.shapeGenerator.addShape('cube');
-            console.log('STARTUP_SHAPE: Cube added with line width 1');
+            console.log('STARTUP_SHAPE: Small cube added (size: 0.05, line: 1, zoom: 0.98)');
         }
         
         console.log('ANALOG_FEEDBACK_ACTIVE: Self-referential loop initiated');
