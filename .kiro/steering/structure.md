@@ -41,6 +41,7 @@
 - Dynamically generates UI sliders and selectors
 - Manages mode switching (time-based vs visual-driven)
 - Handles keyboard shortcuts (U key for UI toggle)
+- Manages mobile menu toggle (three-dot button and slide-out panel)
 
 ### Audio System
 - **AudioSystem**: Master controller, volume, filters, instrument routing
@@ -74,6 +75,14 @@
 - Use ES6 `import`/`export` syntax
 - Dependencies injected via constructor parameters
 - No circular dependencies
+
+### Touch Interaction (Mobile)
+- **CanvasInteraction.js** handles both mouse and touch events
+- Touch gestures tracked via `touches` array
+- 1 finger: pan (translate feedback canvas)
+- 2 fingers: pinch zoom (scale) and rotate
+- Helper methods: `getTouchDistance()`, `getTouchAngle()`, `getTouchCenter()`
+- All touch events use `preventDefault()` to avoid browser defaults
 
 ### State Management
 - Each system manages its own state
@@ -114,3 +123,11 @@
 - Changes take effect immediately (no apply button)
 - Some parameters use `.rampTo()` for smooth audio transitions
 - Video parameters affect next frame render
+
+### Mobile UI Pattern
+1. Three-dot menu button (⋮) in header
+2. Slide-out panel from right side (85% width, max 400px)
+3. Panel contains all video and audio controls
+4. Close via X button or clicking outside panel
+5. Desktop sidebars hidden on mobile (@media max-width: 768px)
+6. Canvas takes full viewport on mobile

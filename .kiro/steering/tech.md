@@ -33,10 +33,20 @@ Since this is a static web application with no build step:
 
 ## Browser Requirements
 
-- Modern browser with ES6 module support
+- Modern mobile browser with ES6 module support (iOS Safari, Chrome Mobile, Firefox Mobile)
 - Web Audio API support
 - Canvas API with `willReadFrequently` context option
+- Touch event support for gestures
 - High-resolution display recommended for best visual quality
+
+## Mobile Optimizations
+
+- Touch gestures: 1-finger pan, 2-finger pinch/zoom, 2-finger rotate
+- Responsive CSS with mobile-first breakpoints (@media max-width: 768px)
+- Slide-out control panel to maximize canvas space
+- Viewport meta tags prevent zoom and enable full-screen web app mode
+- `overscroll-behavior` prevents pull-to-refresh interference
+- Touch-optimized control sizes (larger buttons, sliders)
 
 ## External Dependencies
 
