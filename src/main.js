@@ -73,7 +73,21 @@ startBtn.addEventListener('click', async () => {
         // Start analog feedback loop (camera pointing at TV effect)
         videoInput.startCanvasFeedback(videoProcessor.canvas, 30);
         videoProcessor.start();
-        enableVisualMode();
+        
+        // Mobile: Start with time-based mode and add a cube
+        enableTimeMode();
+        const timeBasedBtn = document.getElementById('timebased-btn');
+        if (timeBasedBtn) {
+            timeBasedBtn.classList.add('active');
+            isTimeBasedActive = true;
+        }
+        
+        // Add a cube shape on startup
+        if (videoProcessor.shapeGenerator) {
+            videoProcessor.shapeGenerator.addShape('cube');
+            console.log('STARTUP_SHAPE: Cube added');
+        }
+        
         console.log('ANALOG_FEEDBACK_ACTIVE: Self-referential loop initiated');
 
         startBtn.textContent = 'SYSTEM_ACTIVE';
@@ -94,16 +108,6 @@ document.getElementById('cam-btn').addEventListener('click', async () => {
         overlay.style.display = 'none';
     } catch (err) {
         console.error('Webcam failed:', err);
-    }
-});
-
-document.getElementById('screen-btn').addEventListener('click', async () => {
-    try {
-        await videoInput.startScreenShare();
-        videoProcessor.start();
-        overlay.style.display = 'none';
-    } catch (err) {
-        console.error('Screen share failed:', err);
     }
 });
 
