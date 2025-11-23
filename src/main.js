@@ -87,10 +87,11 @@ startBtn.addEventListener('click', async () => {
             isTimeBasedActive = true;
         }
         
-        // Add a cube shape on startup
+        // Add a cube shape on startup with thin lines
         if (videoProcessor.shapeGenerator) {
+            videoProcessor.shapeGenerator.lineWidth = 1; // Thin lines to prevent filling screen
             videoProcessor.shapeGenerator.addShape('cube');
-            console.log('STARTUP_SHAPE: Cube added');
+            console.log('STARTUP_SHAPE: Cube added with line width 1');
         }
         
         console.log('ANALOG_FEEDBACK_ACTIVE: Self-referential loop initiated');
