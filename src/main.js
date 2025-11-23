@@ -436,7 +436,7 @@ function generateControls() {
     leftContainer.appendChild(shapeContainer);
 
     // Shape Size and Line Width (mobile-optimized: balanced shape, thinner lines)
-    const defaultShapeSize = isMobile ? 0.32 : 0.15;
+    const defaultShapeSize = isMobile ? 0.36 : 0.15;
     const defaultLineWidth = isMobile ? 1 : 3;
     
     createSlider('SHAPE SIZE', 0.05, 0.4, 0.01, defaultShapeSize, (v) => {
