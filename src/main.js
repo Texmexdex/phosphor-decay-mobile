@@ -87,10 +87,15 @@ startBtn.addEventListener('click', async () => {
             isTimeBasedActive = true;
         }
         
+        // Mobile: Optimize startup settings for better visual
+        if (isMobile) {
+            videoProcessor.params.feedbackZoom = 1.015; // Slight zoom in for better effect
+        }
+        
         // Add a cube shape on startup (uses mobile-optimized defaults: larger shape, thin lines)
         if (videoProcessor.shapeGenerator) {
             videoProcessor.shapeGenerator.addShape('cube');
-            console.log('STARTUP_SHAPE: Cube added with mobile defaults (size:', videoProcessor.shapeGenerator.shapeSize, 'line:', videoProcessor.shapeGenerator.lineWidth, ')');
+            console.log('STARTUP_SHAPE: Cube added (size:', videoProcessor.shapeGenerator.shapeSize, 'line:', videoProcessor.shapeGenerator.lineWidth, 'zoom:', videoProcessor.params.feedbackZoom, ')');
         }
         
         console.log('ANALOG_FEEDBACK_ACTIVE: Self-referential loop initiated');
@@ -432,7 +437,7 @@ function generateControls() {
     leftContainer.appendChild(shapeContainer);
 
     // Shape Size and Line Width (mobile-optimized: larger shape, thinner lines)
-    const defaultShapeSize = isMobile ? 0.25 : 0.15;
+    const defaultShapeSize = isMobile ? 0.40 : 0.15;
     const defaultLineWidth = isMobile ? 1 : 3;
     
     createSlider('SHAPE SIZE', 0.05, 0.4, 0.01, defaultShapeSize, (v) => {

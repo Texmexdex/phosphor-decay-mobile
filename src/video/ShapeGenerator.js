@@ -13,7 +13,7 @@ export class ShapeGenerator {
         this.colorSpeed = 0;
 
         // Global appearance controls (mobile-optimized: larger shape, thinner lines)
-        this.shapeSize = this.isMobile ? 0.25 : 0.15;
+        this.shapeSize = this.isMobile ? 0.40 : 0.15;
         this.lineWidth = this.isMobile ? 1 : 3;
     }
 
