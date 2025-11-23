@@ -89,7 +89,7 @@ startBtn.addEventListener('click', async () => {
         
         // Mobile: Set initial static zoom (zoomed in view, no growing effect)
         if (isMobile) {
-            videoProcessor.params.feedbackZoom = 1.06; // Static zoom in (like pinch zoom)
+            videoProcessor.params.feedbackZoom = 1.03; // Very subtle static zoom in
         }
         
         // Add a cube shape on startup (uses mobile-optimized defaults: larger shape, thin lines)
