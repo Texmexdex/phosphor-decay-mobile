@@ -3,14 +3,18 @@ export class ShapeGenerator {
         this.shapes = [];
         this.startTime = Date.now();
 
+        // Detect mobile for optimized defaults
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                        || window.innerWidth <= 768;
+
         // Global animation controls
         this.rotationSpeed = 0;
         this.pulseSpeed = 0;
         this.colorSpeed = 0;
 
-        // Global appearance controls
-        this.shapeSize = 0.15;
-        this.lineWidth = 3;
+        // Global appearance controls (mobile-optimized)
+        this.shapeSize = this.isMobile ? 0.05 : 0.15;
+        this.lineWidth = this.isMobile ? 1 : 3;
     }
 
     addShape(type = 'random') {

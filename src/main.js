@@ -92,12 +92,10 @@ startBtn.addEventListener('click', async () => {
             videoProcessor.params.feedbackZoom = 0.98; // Zoom out slightly to reduce bleeding
         }
         
-        // Add a cube shape on startup with minimal bleeding
+        // Add a cube shape on startup (uses mobile-optimized defaults)
         if (videoProcessor.shapeGenerator) {
-            videoProcessor.shapeGenerator.shapeSize = 0.05; // Smaller shape
-            videoProcessor.shapeGenerator.lineWidth = 1; // Thin lines
             videoProcessor.shapeGenerator.addShape('cube');
-            console.log('STARTUP_SHAPE: Small cube added (size: 0.05, line: 1, zoom: 0.98)');
+            console.log('STARTUP_SHAPE: Cube added with mobile defaults (size:', videoProcessor.shapeGenerator.shapeSize, 'line:', videoProcessor.shapeGenerator.lineWidth, ')');
         }
         
         console.log('ANALOG_FEEDBACK_ACTIVE: Self-referential loop initiated');
@@ -438,14 +436,17 @@ function generateControls() {
     shapeContainer.appendChild(clearShapesBtn);
     leftContainer.appendChild(shapeContainer);
 
-    // Shape Size and Line Width
-    createSlider('SHAPE SIZE', 0.05, 0.4, 0.01, 0.15, (v) => {
+    // Shape Size and Line Width (mobile-optimized defaults)
+    const defaultShapeSize = isMobile ? 0.05 : 0.15;
+    const defaultLineWidth = isMobile ? 1 : 3;
+    
+    createSlider('SHAPE SIZE', 0.05, 0.4, 0.01, defaultShapeSize, (v) => {
         if (videoProcessor.shapeGenerator) {
             videoProcessor.shapeGenerator.shapeSize = v;
         }
     });
 
-    createSlider('SHAPE LINE', 1, 10, 0.5, 3, (v) => {
+    createSlider('SHAPE LINE', 1, 10, 0.5, defaultLineWidth, (v) => {
         if (videoProcessor.shapeGenerator) {
             videoProcessor.shapeGenerator.lineWidth = v;
         }
