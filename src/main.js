@@ -18,7 +18,12 @@ let isInitialized = false;
 const videoInput = new VideoInput();
 const videoProcessor = new VideoProcessor(videoInput);
 const audioSystem = new AudioSystem();
-const analyzer = new Analyzer(videoProcessor.canvas, 16, 16); // Increased resolution for better motion detection
+
+// Use smaller grid on mobile for better performance
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                  || window.innerWidth <= 768;
+const gridSize = isMobile ? 8 : 16; // 8x8 on mobile, 16x16 on desktop
+const analyzer = new Analyzer(videoProcessor.canvas, gridSize, gridSize);
 const canvasInteraction = new CanvasInteraction(videoProcessor.canvas, videoProcessor);
 
 const composer = new Composer(audioSystem, analyzer);
@@ -466,6 +471,7 @@ function generateControls() {
 
     createSlider('FPS', 1, 120, 1, videoProcessor.params.targetFPS, (v) => {
         videoProcessor.params.targetFPS = v;
+        videoProcessor.frameInterval = 1000 / v;
     });
 
 

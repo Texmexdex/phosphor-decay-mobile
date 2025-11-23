@@ -13,7 +13,11 @@ export class VideoProcessor {
 
         this.isPlaying = false;
 
-        // Effect Parameters
+        // Detect mobile for performance optimization
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                        || window.innerWidth <= 768;
+
+        // Effect Parameters (optimized for mobile)
         this.params = {
             feedback: 0.92, // 0 to 1
             feedbackZoom: 1.01, // Scale factor for feedback
@@ -26,6 +30,7 @@ export class VideoProcessor {
             rgbShift: 0, // Pixel offset
             glitchProb: 0.0, // Probability of glitch trigger
             brightnessThreshold: 100,
+            targetFPS: this.isMobile ? 30 : 60, // Lower FPS on mobile
             // New effects
             invert: 0, // 0 to 1
             contrast: 1, // 0.5 to 2
@@ -37,6 +42,10 @@ export class VideoProcessor {
             colorChase: 0, // 0 to 1 (color trailing effect)
             colorChaseSpeed: 1, // Speed of color propagation
         };
+
+        // Frame timing for FPS control
+        this.lastFrameTime = 0;
+        this.frameInterval = 1000 / this.params.targetFPS;
 
         // Initialize ShapeGenerator
         this.shapeGenerator = new ShapeGenerator();
@@ -100,8 +109,11 @@ export class VideoProcessor {
         const container = this.canvas.parentElement;
         const video = this.videoInput.videoElement;
 
-        // Use high resolution for digital clarity
-        const pixelRatio = window.devicePixelRatio || 1;
+        // Lower pixel ratio on mobile for better performance
+        let pixelRatio = window.devicePixelRatio || 1;
+        if (this.isMobile) {
+            pixelRatio = Math.min(pixelRatio, 1.5); // Cap at 1.5x on mobile
+        }
         
         // If video is loaded, match its aspect ratio
         if (video && video.videoWidth && video.videoHeight) {
@@ -118,12 +130,12 @@ export class VideoProcessor {
                 this.canvas.height = container.clientWidth / videoAspect * pixelRatio;
             }
         } else {
-            // Fallback: fill container with high resolution
+            // Fallback: fill container (lower resolution on mobile)
             const width = (container.clientWidth || 800) * pixelRatio;
             const height = (container.clientHeight || 600) * pixelRatio;
             this.canvas.width = width;
             this.canvas.height = height;
-            console.log('CANVAS_SIZED:', width, 'x', height, 'pixelRatio:', pixelRatio);
+            console.log('CANVAS_SIZED:', width, 'x', height, 'pixelRatio:', pixelRatio, 'mobile:', this.isMobile);
         }
 
         // Scale canvas display size to match container
@@ -149,8 +161,16 @@ export class VideoProcessor {
         this.isPlaying = false;
     }
 
-    loop() {
+    loop(timestamp) {
         if (!this.isPlaying) return;
+
+        // FPS throttling for performance
+        const elapsed = timestamp - this.lastFrameTime;
+        if (elapsed < this.frameInterval) {
+            requestAnimationFrame(this.loop);
+            return;
+        }
+        this.lastFrameTime = timestamp - (elapsed % this.frameInterval);
 
         const width = this.canvas.width;
         const height = this.canvas.height;

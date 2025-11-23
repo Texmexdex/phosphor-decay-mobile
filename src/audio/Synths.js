@@ -4,9 +4,13 @@ export class SynthEngine {
     constructor(destination) {
         this.destination = destination;
 
+        // Detect mobile for performance optimization
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                        || window.innerWidth <= 768;
+
         // Effects Bus
         this.reverb = new Tone.Reverb({
-            decay: 4,
+            decay: this.isMobile ? 2 : 4, // Shorter reverb on mobile
             wet: 0.5
         }).connect(this.destination);
 
@@ -29,12 +33,16 @@ export class SynthEngine {
         this.distortion = new Tone.Distortion(0.4).connect(this.bitCrusher);
         this.distortion.wet.value = 0;
 
-        // Instruments
+        // Instruments (reduced polyphony on mobile)
+        const maxPolyphony = this.isMobile ? 4 : 8;
 
         // 1. Pad (Ambient background)
         this.padVol = new Tone.Volume(-12).connect(this.reverb);
         this.currentPadType = 'warm';
-        this.pad = new Tone.PolySynth(Tone.Synth, PAD_PRESETS[this.currentPadType]).connect(this.padVol);
+        this.pad = new Tone.PolySynth(Tone.Synth, {
+            ...PAD_PRESETS[this.currentPadType],
+            maxPolyphony: maxPolyphony
+        }).connect(this.padVol);
 
         // 2. Bass (Deep, FM)
         this.bassVol = new Tone.Volume(-6).connect(this.distortion);
@@ -44,7 +52,10 @@ export class SynthEngine {
         // 3. Lead (Plucky, Arp)
         this.leadVol = new Tone.Volume(-10).connect(this.delay);
         this.currentLeadType = 'saw';
-        this.lead = new Tone.PolySynth(Tone.Synth, LEAD_PRESETS[this.currentLeadType]).connect(this.leadVol);
+        this.lead = new Tone.PolySynth(Tone.Synth, {
+            ...LEAD_PRESETS[this.currentLeadType],
+            maxPolyphony: maxPolyphony
+        }).connect(this.leadVol);
 
         // 4. Noise (Rhythmic Glitch)
         this.noiseVol = new Tone.Volume(-15).connect(this.bitCrusher);
