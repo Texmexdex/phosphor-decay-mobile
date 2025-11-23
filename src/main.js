@@ -89,13 +89,14 @@ startBtn.addEventListener('click', async () => {
         
         // Mobile: Set initial static zoom (zoomed in view, no growing effect)
         if (isMobile) {
-            videoProcessor.params.feedbackZoom = 1.12; // Static zoom in (like pinch zoom)
+            videoProcessor.params.feedbackZoom = 1.06; // Static zoom in (like pinch zoom)
         }
         
         // Add a cube shape on startup (uses mobile-optimized defaults: larger shape, thin lines)
         if (videoProcessor.shapeGenerator) {
+            videoProcessor.shapeGenerator.colorSpeed = 0.5; // Gradual color shift on mobile
             videoProcessor.shapeGenerator.addShape('cube');
-            console.log('STARTUP_SHAPE: Cube added (size:', videoProcessor.shapeGenerator.shapeSize, 'line:', videoProcessor.shapeGenerator.lineWidth, 'zoom:', videoProcessor.params.feedbackZoom, ')');
+            console.log('STARTUP_SHAPE: Cube added (size:', videoProcessor.shapeGenerator.shapeSize, 'line:', videoProcessor.shapeGenerator.lineWidth, 'zoom:', videoProcessor.params.feedbackZoom, 'colorSpeed:', videoProcessor.shapeGenerator.colorSpeed, ')');
         }
         
         console.log('ANALOG_FEEDBACK_ACTIVE: Self-referential loop initiated');
